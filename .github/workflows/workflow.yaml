@@ -1,0 +1,25 @@
+name: CI
+on:
+  - push
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.3.0
+        with:
+          node-version: '23'
+      - name: Install dependencies
+        run: npm install
+        working-directory: app
+      - name: Run tests
+        run: npm test
+        working-directory: app
+      - name: Build Docker image
+        working-directory: app
+        run: |
+          export SHELL=/bin/bash
+          docker build -t rent .
+          docker images
